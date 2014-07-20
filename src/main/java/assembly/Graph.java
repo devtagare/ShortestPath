@@ -4,17 +4,28 @@ import graph.Edge;
 
 import java.util.ArrayList;
 
-
+/**
+ * @author dev
+ * 
+ * @param <E>
+ */
 public class Graph<E> {
 
-  // ArrayList to hold edges for random access
+  /**
+   * ArrayList to hold edges for random access
+   */
   private ArrayList<Edge<E>> edges;
 
   public Graph() {
     edges = new ArrayList<Edge<E>>();
   }
 
-  // add Edge to the List
+  /**
+   * @param vertex
+   * @return - boolean
+   * 
+   *         Add Edge to the List
+   */
   public boolean addEdge(Edge<E> vertex) {
     if (edges.contains(vertex))
       return false;
@@ -30,20 +41,24 @@ public class Graph<E> {
     return edges.get(index);
   }
 
-  // returns number of Edges in Graph
+  /**
+   * @return : number of Edges in Graph
+   */
   public int count() {
     return edges.size();
   }
 
+  /**
+   * Checks if two graphs are equal. Store all of Edges of larger Graph & Graphs are equal only if
+   * temp is unchanged *
+   */
   public boolean equals(Graph<E> other) {
 
     if (other.edges.size() != edges.size())
       return false;
 
-    // store all of Edges of larger Graph
     ArrayList<Edge<E>> temp = new ArrayList<Edge<E>>(other.edges);
 
-    // Graphs are equal only if temp is unchanged
     return temp.retainAll(edges);
   }
 }

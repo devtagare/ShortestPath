@@ -13,6 +13,7 @@ public class TestShortestPath {
 
   Edge<Integer> i, j, k, l, m, n;
   Graph<Integer> list;
+  Dijkstra<Integer> test;
 
   @Before
   public void assembleGraph() {
@@ -47,6 +48,7 @@ public class TestShortestPath {
     l.connectTo(m, 6);
     n.connectTo(m, 9);
 
+    test = new Dijkstra<Integer>(list);
   }
 
   @Test
@@ -57,19 +59,16 @@ public class TestShortestPath {
 
   @Test
   public void testIncorrectDistance() {
-    Dijkstra<Integer> test = new Dijkstra<Integer>(list);
     Assert.assertNotEquals(22, test.heapPath(i, l));
   }
 
   @Test
   public void testPath() {
-    Dijkstra<Integer> test = new Dijkstra<Integer>(list);
     Assert.assertEquals("134", test.getPath(i, l));
   }
 
   @Test
   public void testUnreachablePath() {
-    Dijkstra<Integer> test = new Dijkstra<Integer>(list);
     Assert.assertEquals("Sink Unreachable", test.getPath(m, i).trim());
   }
 

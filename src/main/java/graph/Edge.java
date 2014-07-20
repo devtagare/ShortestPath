@@ -4,26 +4,31 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+
+
+/**
+ * @author dev
+ * 
+ * @param <E>
+ * 
+ *        Base class for creating an edge.Stores the number of edges,an Element <E> - used in
+ *        weighted graphs and game theory in-case of incoming gains,this is a provision for the
+ *        change in fuel prices or new routes. It has individual edge identifier,weight and pointers
+ *        for reference to other edges.
+ */
 public class Edge<E> {
 
-  // # - edges
   private static int ID = 0;
 
-  // used in weighted graphs and game theory in-case of incoming gains,this is a provision for the
-  // change in fuel prices or new routes
   private E element;
 
-  // the individual Edge identifier
   private int id;
 
   private int weight;
 
-  // pointers for reference to other Edges
   private LinkedList<Link<E>> pointers;
 
-  // constructors
   public Edge() {
-    // invoke constructor to initialize elem to null pointer
     this(null, Integer.MAX_VALUE);
   }
 
@@ -34,7 +39,6 @@ public class Edge<E> {
     this.weight = distance;
   }
 
-  // accessors and mutators
   public int getId() {
     return id;
   }

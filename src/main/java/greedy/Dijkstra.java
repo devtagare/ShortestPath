@@ -13,15 +13,19 @@ import java.util.PriorityQueue;
 import assembly.Graph;
 
 /**
- * @param E: The type to store in the Graph
- * */
-
+ * @author dev
+ * 
+ * @param <E> : The type to store in the Graph
+ */
+/**
+ * @author dev
+ * 
+ * @param <E>
+ */
 public class Dijkstra<E> {
 
-  // the Graph to traverse
   private Graph<E> graph;
 
-  // the PriorityQueue for the heap-based sort
   private PriorityQueue<Link<E>> heap;
 
   Map<Edge<E>, Edge<E>> learnedPath;
@@ -53,7 +57,8 @@ public class Dijkstra<E> {
     });
   }
 
-  // initializes the Graph Nodes to infinity
+
+
   public void resetGraph() {
     for (int i = 0; i < this.graph.count(); i++) {
       this.graph.get(i).setDistance(Integer.MAX_VALUE);
@@ -61,23 +66,24 @@ public class Dijkstra<E> {
     }
   }
 
-  /***
-   * input - starting vertex,end vertex
+  /**
+   * @param start
+   * @param end
+   * @return - shortest distance from source to destination
    * 
-   * PriorityQueue is used to determine which Edge to visit next. Nodes are evaluated in a
-   * breadth-first search, and pushed onto the PriorityQueue. The PriorityQueue is then polled and
-   * the process is repeated until the PriorityQueue is empty.
-   * */
-
+   *         Starting point is the start vertex.Initial distance is 0. PriorityQueue is used to
+   *         determine which Edge to visit next. Nodes are evaluated in a breadth-first search, and
+   *         pushed onto the PriorityQueue. The PriorityQueue is then polled and the process is
+   *         repeated until the PriorityQueue is empty. This method also keeps a track of the vertex
+   *         being set and its parent from the source to destination.A linkedHashMap is used to
+   *         maintain a combination of <current node(being set),parent>
+   */
   public int heapPath(Edge<E> start, Edge<E> end) {
-    start.setDistance(0); // initialize the start distance to 0
+    start.setDistance(0);
 
-    // the Edge to evaluate. We evaluate the start Node first
     Edge<E> evaluate = start;
 
-    // as long as we have elements in the Graph to traverse
     do {
-      // push evaluate's children onto the PriorityQueue
       LinkedList<Link<E>> links = evaluate.getConnections();
       Iterator<Link<E>> iterate = links.iterator();
 
@@ -86,8 +92,6 @@ public class Dijkstra<E> {
         heap.add(conn);
       }
 
-      // then poll the PriorityQueue to determine
-      // which Node to visit next
       Link<E> temp = null;
       if (!heap.isEmpty()) {
         temp = heap.poll();
@@ -103,19 +107,14 @@ public class Dijkstra<E> {
 
       evaluate = temp.getSink();
 
-      // and update that Node's distance if a shorter path is found
       int distance = evaluate.getDistance();
       int newDist = temp.getSource().getDistance() + temp.getDistance();
-
-      // set the distance and also make an entry in the map of the form <current node,parent>
 
       if (newDist < distance) {
         evaluate.setDistance(newDist);
         if (!learnedPath.containsKey(temp.getSink())) {
           learnedPath.put(temp.getSink(), temp.getSource());
-          System.out.println("Learned" + temp.getSink());
         } else {
-          System.out.println("Inside else");
           break;
         }
       }
@@ -125,19 +124,40 @@ public class Dijkstra<E> {
     return end.getDistance();
   }
 
+  /**
+   * @param start
+   * @param end
+   * @return path- shortest path from source to destination input - source edge,destination edge
+   *         This is an orchestration method that invokes the method that calculates the shortest
+   *         distance - heapPath and also invokes the method to plot the path.- plotPath .Returns
+   *         the shortest path from source to destination.
+   */
+
   public String getPath(Edge<E> start, Edge<E> end) {
     distance = heapPath(start, end);
     path = plotPath(start, end, graph.count());
     return path;
   }
 
+  /**
+   * @param start
+   * @param end
+   * @param length
+   * @return - shortest path from source to destination is it is a valid path,"Sink unreachable"
+   *         otherwise.
+   * 
+   *         This method iterates over the learnedPath , from sink to source to capture the shortest
+   *         path.Map is of the form <vertex_set,parent>,the method goes from the
+   *         destination,picking up its parent and using the parent as the next vertex.A path
+   *         reversal is used at the end.
+   */
+
   public String plotPath(Edge<E> start, Edge<E> end, int length) {
 
     StringBuffer sb = new StringBuffer();
     Edge<E> sink = end;
     int i = 0;
-    // break the loop when you can successfully traverse from the sink to the source or you exceed
-    // the number of edges assembled
+
     while (learnedPath.get(end) != start && i++ < length) {
       sb.append(learnedPath.get(end));
       end = learnedPath.get(end);
@@ -146,11 +166,8 @@ public class Dijkstra<E> {
     if (learnedPath.get(end) == start && learnedPath.get(start) != end) {
       setIsPathValid(true);
 
-      // we have the order in which vertices need to be visited from the sink to source,so we
-      // reverse them
       sb.reverse();
 
-      // adding start and end vertices for the sake of intuitiveness & completeness
       sb.insert(0, start);
       sb.append(sink);
       return sb.toString();

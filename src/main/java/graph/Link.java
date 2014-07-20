@@ -19,7 +19,6 @@ public class Link<E> implements Comparable<Link<E>> {
     this.distance = distance;
   }
 
-  // accessors and mutators
   public Edge<E> getSource() {
     return source;
   }
@@ -36,8 +35,9 @@ public class Link<E> implements Comparable<Link<E>> {
     this.distance = distance;
   }
 
-  // Two connectors are equal if the two Edges
-  // are equal and the distance is equal
+  /*
+   * Two connectors are equal if the two Edges are equal and the distance is equal
+   */
   public boolean equals(Link<E> other) {
     return source.equals(other.getSource()) && sink.equals(other.getSink())
         && distance == other.getDistance();

@@ -57,8 +57,6 @@ public class Dijkstra<E> {
     });
   }
 
-
-
   public void resetGraph() {
     for (int i = 0; i < this.graph.count(); i++) {
       this.graph.get(i).setDistance(Integer.MAX_VALUE);
@@ -94,12 +92,12 @@ public class Dijkstra<E> {
 
       Link<E> temp = null;
       if (!heap.isEmpty()) {
-        temp = heap.poll();
-        if (learnedPath.containsKey(temp.getSource()) && learnedPath.containsKey(temp.getSink())
-            || temp.getSink().getElem().equals(start.getElem())) {
-
+        while (learnedPath.containsKey((temp = heap.peek()).getSource())
+            && learnedPath.containsKey((temp = heap.peek()).getSink())) {
           temp = heap.poll();
         }
+
+        temp = heap.poll();
 
       } else {
         break;

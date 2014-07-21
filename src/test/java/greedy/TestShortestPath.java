@@ -11,7 +11,7 @@ import assembly.Graph;
 
 public class TestShortestPath {
 
-  Edge<Integer> i, j, k, l, m, n;
+  Edge<Integer> i, j, k, l, m, n, x;
   Graph<Integer> list;
   Dijkstra<Integer> test;
 
@@ -24,6 +24,7 @@ public class TestShortestPath {
     l = new Edge<Integer>(4, 0);
     m = new Edge<Integer>(5, 0);
     n = new Edge<Integer>(6, 0);
+    x = new Edge<Integer>(7, 0);
 
     list.addEdge(i);
     list.addEdge(j);
@@ -31,22 +32,26 @@ public class TestShortestPath {
     list.addEdge(l);
     list.addEdge(m);
     list.addEdge(n);
+    list.addEdge(x);
 
     i.connectTo(j, 7);
-
     i.connectTo(k, 9);
     i.connectTo(n, 14);
+    i.connectTo(x, 200);
 
     k.connectTo(j, 11);
-    j.connectTo(k, 10);
-    j.connectTo(l, 15);
-    l.connectTo(j, 11);
-
     k.connectTo(n, 2);
     k.connectTo(l, 11);
 
+    j.connectTo(k, 10);
+    j.connectTo(l, 15);
+
+    l.connectTo(j, 11);
     l.connectTo(m, 6);
+
     n.connectTo(m, 9);
+
+    m.connectTo(i, 9);
 
     test = new Dijkstra<Integer>(list);
   }
@@ -69,7 +74,7 @@ public class TestShortestPath {
 
   @Test
   public void testUnreachablePath() {
-    Assert.assertEquals("Sink Unreachable", test.getPath(m, i).trim());
+    Assert.assertEquals("Sink Unreachable", test.getPath(m, l).trim());
   }
 
 }
